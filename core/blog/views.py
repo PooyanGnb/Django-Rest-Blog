@@ -2,7 +2,7 @@ from typing import Any
 from django.db.models.query import QuerySet
 from django.shortcuts import render
 from django.views.generic.base import TemplateView, RedirectView
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from .models import Post
 
 # Create your views here.
@@ -31,3 +31,8 @@ class PostList(ListView):
     def get_queryset(self):
         posts = Post.objects.filter(status=True).order_by(self.ordering)
         return posts
+    
+
+class PostDetailView(DetailView):
+    model = Post
+    
