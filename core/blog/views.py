@@ -4,7 +4,7 @@ from django.forms import BaseModelForm
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic.base import TemplateView, RedirectView
-from django.views.generic import ListView, DetailView, FormView, CreateView
+from django.views.generic import ListView, DetailView, FormView, CreateView, UpdateView
 from .models import Post
 from .forms import PostForm
 
@@ -69,3 +69,10 @@ class PostCreateView(CreateView):
     def form_valid(self, form):
         form.instance.author  =  self.request.user
         return super().form_valid(form)
+    
+
+class PostEditView(UpdateView):
+    # a class based view to edit post
+    model =  Post
+    form_class = PostForm
+    success_url = '/blog/post/'
