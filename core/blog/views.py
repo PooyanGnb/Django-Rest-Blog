@@ -4,7 +4,7 @@ from django.forms import BaseModelForm
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic.base import TemplateView, RedirectView
-from django.views.generic import ListView, DetailView, FormView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, FormView, CreateView, UpdateView, DeleteView
 from .models import Post
 from .forms import PostForm
 
@@ -75,4 +75,10 @@ class PostEditView(UpdateView):
     # a class based view to edit post
     model =  Post
     form_class = PostForm
+    success_url = '/blog/post/'
+
+
+class PostDeleteView(DeleteView):
+    # a class based view to delete post
+    model = Post
     success_url = '/blog/post/'

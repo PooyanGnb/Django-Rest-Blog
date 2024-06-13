@@ -11,7 +11,8 @@
         {% for post in posts %}
         <li>
             <a href="{% url 'blog:post-detail' pk=post.id %}"><h2>{{post.id}} - {{post.title}}</h2></a>
-            <a href="{% url 'blog:post-edit' pk=post.id %}">Edit</a>
+            <a href="{% url 'blog:post-edit' pk=post.id %}">Edit</a> -
+            <a href="{% url 'blog:post-delete' pk=post.id %}">delete</a> -
             <small>{{post.author}}. {{post.created_date}}</small>
         </li>
         {% endfor %}
