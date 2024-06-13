@@ -7,6 +7,7 @@ from django.views.generic.base import TemplateView, RedirectView
 from django.views.generic import ListView, DetailView, FormView, CreateView, UpdateView, DeleteView
 from .models import Post
 from .forms import PostForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 class IndexView(TemplateView):
@@ -56,7 +57,7 @@ class PostDetailView(DetailView):
 #         return super().form_valid(form)
 
 
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin, CreateView):
     # a class based view to create post
     model = Post
 
@@ -71,14 +72,14 @@ class PostCreateView(CreateView):
         return super().form_valid(form)
     
 
-class PostEditView(UpdateView):
+class PostEditView(LoginRequiredMixin, UpdateView):
     # a class based view to edit post
     model =  Post
     form_class = PostForm
     success_url = '/blog/post/'
 
 
-class PostDeleteView(DeleteView):
+class PostDeleteView(LoginRequiredMixin, DeleteView):
     # a class based view to delete post
     model = Post
     success_url = '/blog/post/'
