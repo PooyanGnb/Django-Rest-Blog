@@ -1,9 +1,11 @@
 from typing import Any
 from django.db.models.query import QuerySet
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic.base import TemplateView, RedirectView
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, FormView
 from .models import Post
+from .forms import PostForm
 
 # Create your views here.
 class IndexView(TemplateView):
@@ -34,5 +36,17 @@ class PostList(ListView):
     
 
 class PostDetailView(DetailView):
+    # a class based view to show post detail
     model = Post
     
+    
+# an example of form view
+class PostCreateView(FormView):
+    # a class based view to implement form
+    template_name = "blog/create.html"
+    form_class = PostForm
+    success_url = "/blog/post/"
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)

@@ -9,5 +9,6 @@ urlpatterns = [
     # path("cbv/", views.IndexView.as_view(), name="cbv-index"),
     # path("linkedin/", views.RedirectToLinkedIn.as_view(), name="linkedin-redirect"),
     path("post/", views.PostList.as_view(), name="post-list"),
-    path("post/<pk>/", views.PostDetailView.as_view(), name="post-detail")
+    path("post/create/", views.PostCreateView.as_view(), name="post-create"),
+    path("post/<pk>/", views.PostDetailView.as_view(), name="post-detail"),
 ]
