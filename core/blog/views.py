@@ -9,6 +9,7 @@ from .models import Post
 from .forms import PostForm
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
+
 # Create your views here.
 class IndexView(TemplateView):
     # a class based view to show index page

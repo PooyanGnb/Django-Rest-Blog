@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     #apps
     'accounts',
     'blog',
+
+    # external modules
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
