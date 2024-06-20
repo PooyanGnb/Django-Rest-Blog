@@ -5,8 +5,8 @@ from rest_framework.views import APIView
 from rest_framework import viewsets
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import mixins
-from .serializers import PostSerializer
-from ...models import Post
+from .serializers import PostSerializer, CategorySerializer
+from ...models import Post, Category
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 
@@ -117,28 +117,40 @@ from django.shortcuts import get_object_or_404
 #     serializer_class = PostSerializer
 
 
-class PostViewSets(viewsets.ViewSet):
+# class PostViewSets(viewsets.ViewSet):
+#     queryset = Post.objects.filter(status=True)
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+#     serializer_class = PostSerializer
+
+#     def list(self, request, *args, **kwargs):
+#         serializer =  self.serializer_class(self.queryset, many=True)
+#         return Response(serializer.data)
+    
+#     def retrieve(self, request, pk, *args, **kwargs):
+#         post = get_object_or_404(self.queryset, pk=pk)
+#         serializer =  self.serializer_class(post)
+#         return Response(serializer.data)
+    
+#     def create(self, request, *args, **kwargs):
+#         pass
+
+#     def update(self, request, pk=None):
+#         pass
+
+#     def partial_update(self, request, pk=None):
+#         pass
+
+#     def destroy(self, request, pk=None):
+#         pass
+
+
+class PostModelViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.filter(status=True)
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = PostSerializer
 
-    def list(self, request, *args, **kwargs):
-        serializer =  self.serializer_class(self.queryset, many=True)
-        return Response(serializer.data)
-    
-    def retrieve(self, request, pk, *args, **kwargs):
-        post = get_object_or_404(self.queryset, pk=pk)
-        serializer =  self.serializer_class(post)
-        return Response(serializer.data)
-    
-    def create(self, request, *args, **kwargs):
-        pass
 
-    def update(self, request, pk=None):
-        pass
-
-    def partial_update(self, request, pk=None):
-        pass
-
-    def destroy(self, request, pk=None):
-        pass
+class CategoryModelViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = CategorySerializer
+    queryset = Category.objects.all()
