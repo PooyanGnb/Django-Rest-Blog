@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.views import APIView
-from rest_framework.generics import GenericAPIView, ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import mixins
 from .serializers import PostSerializer
 from ...models import Post
@@ -81,28 +81,36 @@ class PostList(ListCreateAPIView):
 #     #     return Response({'detail':'Post does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
 
-class PostDetail(APIView):
-    # getting detail of the post and edit plus deleting it
+# class PostDetail(APIView):
+#     # getting detail of the post and edit plus deleting it
 
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+#     serializer_class = PostSerializer
+
+#     def get(self, request, id):
+#         # retrieving the post data
+#         post = get_object_or_404(Post, pk=id, status=True)
+#         serializer = self.serializer_class(post)
+#         return Response(serializer.data)
+    
+#     def put(self, request, id):
+#         # editing the post data
+#         post = get_object_or_404(Post, pk=id, status=True)
+#         serializer = self.serializer_class(post, data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         return Response(serializer.data)
+    
+#     def delete(self, request, id):
+#         # deleting the post
+#         post = get_object_or_404(Post, pk=id, status=True)
+#         post.delete()
+#         return Response({"detail":"Item removed successfully"}, status=status.HTTP_204_NO_CONTENT)
+
+
+class PostDetail(RetrieveUpdateDestroyAPIView):
+    # getting detail of the post and edit plus deleting it
+    queryset = Post.objects.filter(status=True)
+    # lookup_field = 'id' # or make the argument in the url pk instead of id
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = PostSerializer
-
-    def get(self, request, id):
-        # retrieving the post data
-        post = get_object_or_404(Post, pk=id, status=True)
-        serializer = self.serializer_class(post)
-        return Response(serializer.data)
-    
-    def put(self, request, id):
-        # editing the post data
-        post = get_object_or_404(Post, pk=id, status=True)
-        serializer = self.serializer_class(post, data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
-    
-    def delete(self, request, id):
-        # deleting the post
-        post = get_object_or_404(Post, pk=id, status=True)
-        post.delete()
-        return Response({"detail":"Item removed successfully"}, status=status.HTTP_204_NO_CONTENT)
