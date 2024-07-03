@@ -9,6 +9,7 @@ from .serializers import PostSerializer, CategorySerializer
 from ...models import Post, Category
 from rest_framework import status
 from django.shortcuts import get_object_or_404
+from .permissions import IsOwnerOrReadOnly
 
 
 # @api_view(['GET', 'POST'])
@@ -146,7 +147,7 @@ from django.shortcuts import get_object_or_404
 
 class PostModelViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.filter(status=True)
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     serializer_class = PostSerializer
 
 
