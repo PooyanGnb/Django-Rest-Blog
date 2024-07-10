@@ -1,7 +1,7 @@
 from rest_framework import generics
 from rest_framework.response import Response
 from .serializers import RegistrationSerializer
-from rest_framework import status
+from rest_framework import status 
 
 
 class RegistrationApiView(generics.GenericAPIView):
@@ -16,3 +16,5 @@ class RegistrationApiView(generics.GenericAPIView):
 
             }
             return Response(data, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
