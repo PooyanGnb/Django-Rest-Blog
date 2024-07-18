@@ -8,9 +8,9 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 urlpatterns = [
     # registration
     path('registration', views.RegistrationApiView.as_view(), name='registration'),
-    # activation
     path('test-email/', views.TestEmailSend.as_view(), name='test-email'),
-    # path('activation/confirm/'),
+    # activation
+    path('activation/confirm/<str:token>', views.ActivationApiView.as_view(), name='activation'),
     # resend activation
     # path('activation/resend/'),
     # change password
