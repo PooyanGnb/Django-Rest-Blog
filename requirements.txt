@@ -11,3 +11,6 @@ coreapi
 drf-yasg[validation]
 
 # deployment modules
+
+# email 3rd party modules
+django-mail-templated
