@@ -1,6 +1,6 @@
 from rest_framework import generics
 from rest_framework.response import Response
-from .serializers import RegistrationSerializer, CustomAuthTokenSerializer, CustomTokenObtainPairSerializer, ChangePasswordSerializer, ProfileSerializer
+from .serializers import RegistrationSerializer, CustomAuthTokenSerializer, ActivationResendSerializer, CustomTokenObtainPairSerializer, ChangePasswordSerializer, ProfileSerializer
 from rest_framework import status 
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
@@ -147,18 +147,18 @@ class ActivationApiView(APIView):
         return Response({"detail":"Your account has been verified and activated successfully"})
 
 
-class ActivationResendApiView(APIView):
-    def post(self, request, *args, **kwargs):
-        email = request.data.get('email')
-        if email:
-            user_obj = get_object_or_404(User, email=email)
-            token = self.get_tokens_for_user(user_obj)
-            email_obj = EmailMessage('email/activation_email.tpl', {'token': token}, 'admin@admin.com', to=[self.email])
-            EmailThread(email_obj).start()  
-            return Response({"details":"User activation resend successfully"}, status=status.HTTP_200_OK)
-        else:
-            return Response({"details":"Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
-        
+class ActivationResendApiView(generics.GenericAPIView):
+    serializer_class = ActivationResendSerializer
+
+    def post(self, request, *args, **kwargs):  
+        serializer = self.serializer_class(data=request.data)   
+        serializer.is_valid(raise_exception=True)
+        user_obj = serializer.validated_data['user']
+        token = self.get_tokens_for_user(user_obj)
+        email_obj = EmailMessage('email/activation_email.tpl', {'token': token}, 'admin@admin.com', to=[user_obj.email])
+        EmailThread(email_obj).start()  
+        return Response({"details":"User activation resend successfully"}, status=status.HTTP_200_OK)       
+    
     def get_tokens_for_user(self, user):
         refresh = RefreshToken.for_user(user)
         return str(refresh.access_token)
