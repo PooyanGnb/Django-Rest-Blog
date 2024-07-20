@@ -32,9 +32,9 @@ class RegistrationApiView(generics.GenericAPIView):
                 'email' : email,
 
             }
-            user_obj = get_object_or_404(User, email)
+            user_obj = get_object_or_404(User, email=email)
             token = self.get_tokens_for_user(user_obj)
-            email_obj = EmailMessage('email/activation_email.tpl', {'token': token}, 'admin@admin.com', to=[self.email])
+            email_obj = EmailMessage('email/activation_email.tpl', {'token': token}, 'admin@admin.com', to=[email])
             EmailThread(email_obj).start()  
             return Response(data, status=status.HTTP_201_CREATED)
         
@@ -117,7 +117,7 @@ class TestEmailSend(generics.GenericAPIView):
         self.email = "piop@piop.com"
         user_obj = get_object_or_404(User, email=self.email)
         token = self.get_tokens_for_user(user_obj)
-        email_obj = EmailMessage('email/hello.tpl', {'token': token}, 'admin@admin.com', to=[self.email])
+        email_obj = EmailMessage('email/activation_email.tpl', {'token': token}, 'admin@admin.com', to=[self.email])
         EmailThread(email_obj).start()  
         return Response('email sent')
         
@@ -129,8 +129,16 @@ class TestEmailSend(generics.GenericAPIView):
 class ActivationApiView(APIView):
     def get(self, request, token, *args, **kwargs): 
         try:
+            # decode the jwt token
             token = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+            # getting user id from jwt token
+            user_id = token.get('user_id')
         except ExpiredSignatureError:
             return Response({'details':"token has been expired"}, status=status.HTTP_400_BAD_REQUEST)
         except InvalidSignatureError:
             return Response({'details':"token is not valid"}, status=status.HTTP_400_BAD_REQUEST)
+        # getting the user and make it verified and then save it
+        user_obj = User.objects.get(pk = user_id)
+        user_obj.is_verified = True
+        user_obj.save()
+        return Response({"detail":"Your account has been verified and activated successfully"})
