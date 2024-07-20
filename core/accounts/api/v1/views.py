@@ -139,6 +139,27 @@ class ActivationApiView(APIView):
             return Response({'details':"token is not valid"}, status=status.HTTP_400_BAD_REQUEST)
         # getting the user and make it verified and then save it
         user_obj = User.objects.get(pk = user_id)
+        # check if the user is already verified
+        if user_obj.is_verified:
+            return Response({"detail":"Your account has already been verified"})
         user_obj.is_verified = True
         user_obj.save()
         return Response({"detail":"Your account has been verified and activated successfully"})
+
+
+class ActivationResendApiView(APIView):
+    def post(self, request, *args, **kwargs):
+        email = request.data.get('email')
+        if email:
+            user_obj = get_object_or_404(User, email=email)
+            token = self.get_tokens_for_user(user_obj)
+            email_obj = EmailMessage('email/activation_email.tpl', {'token': token}, 'admin@admin.com', to=[self.email])
+            EmailThread(email_obj).start()  
+            return Response({"details":"User activation resend successfully"}, status=status.HTTP_200_OK)
+        else:
+            return Response({"details":"Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
+        
+    def get_tokens_for_user(self, user):
+        refresh = RefreshToken.for_user(user)
+        return str(refresh.access_token)
+    
