@@ -5,13 +5,14 @@ from rest_framework.views import APIView
 from rest_framework import viewsets
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import mixins
+from rest_framework.filters import SearchFilter, OrderingFilter
+from django.shortcuts import get_object_or_404
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import status
+
 from .serializers import PostSerializer, CategorySerializer
 from ...models import Post, Category
-from rest_framework import status
-from django.shortcuts import get_object_or_404
 from .permissions import IsOwnerOrReadOnly
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter, OrderingFilter
 from .paginations import DefaultPagination
 
 
@@ -26,7 +27,7 @@ from .paginations import DefaultPagination
 #         serializer = PostSerializer(data=request.data) # must specify argument by data =
 
 #         # validation must be done. there is 2 ways to validate. one is if statement and other is raise exception
-        
+
 #         # if serializer.is_valid():
 #         #     serializer.save()
 #         #     return Response(serializer.data)
@@ -49,7 +50,7 @@ from .paginations import DefaultPagination
 #         posts = Post.objects.filter(status=True)
 #         serializer = PostSerializer(posts, many=True)
 #         return Response(serializer.data)
-    
+
 #     def post(self, request, *args, **kwargs):
 #         # creating a post
 #         serializer = PostSerializer(data=request.data) # must specify argument by data =
@@ -90,7 +91,7 @@ from .paginations import DefaultPagination
 #         post = get_object_or_404(Post, pk=id, status=True)
 #         serializer = self.serializer_class(post)
 #         return Response(serializer.data)
-    
+
 #     def put(self, request, id):
 #         # editing the post data
 #         post = get_object_or_404(Post, pk=id, status=True)
@@ -98,13 +99,13 @@ from .paginations import DefaultPagination
 #         serializer.is_valid(raise_exception=True)
 #         serializer.save()
 #         return Response(serializer.data)
-    
+
 #     def delete(self, request, id):
 #         # deleting the post
 #         post = get_object_or_404(Post, pk=id, status=True)
 #         post.delete()
 #         return Response({"detail":"Item removed successfully"}, status=status.HTTP_204_NO_CONTENT)
-    
+
 
 # class PostList(ListCreateAPIView):
 #     # getting a list of post and creating a new post
@@ -129,12 +130,12 @@ from .paginations import DefaultPagination
 #     def list(self, request, *args, **kwargs):
 #         serializer =  self.serializer_class(self.queryset, many=True)
 #         return Response(serializer.data)
-    
+
 #     def retrieve(self, request, pk, *args, **kwargs):
 #         post = get_object_or_404(self.queryset, pk=pk)
 #         serializer =  self.serializer_class(post)
 #         return Response(serializer.data)
-    
+
 #     def create(self, request, *args, **kwargs):
 #         pass
 
@@ -153,9 +154,13 @@ class PostModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     serializer_class = PostSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = {'category':['exact', 'in'], 'author':['exact'], 'status':['exact']}
-    search_fields = ['title', 'content']
-    ordering_fields = ['published_date']
+    filterset_fields = {
+        "category": ["exact", "in"],
+        "author": ["exact"],
+        "status": ["exact"],
+    }
+    search_fields = ["title", "content"]
+    ordering_fields = ["published_date"]
     pagination_class = DefaultPagination
 
 

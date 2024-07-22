@@ -1,7 +1,10 @@
 from django.db import models
-from django.contrib.auth.models import (BaseUserManager, AbstractBaseUser, PermissionsMixin)
+from django.contrib.auth.models import (
+    BaseUserManager,
+    AbstractBaseUser,
+    PermissionsMixin,
+)
 from django.utils.translation import gettext_lazy as _
-
 
 
 class UserManager(BaseUserManager):
@@ -10,7 +13,7 @@ class UserManager(BaseUserManager):
     def create_user(self, email, password, **extra_fields):
         # create and save a user with the given email and password
         if not email:
-            raise ValueError(_('Email cannot be empty'))
+            raise ValueError(_("Email cannot be empty"))
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
@@ -19,17 +22,18 @@ class UserManager(BaseUserManager):
 
     def create_superuser(self, email, password, **extra_fields):
         # create and save a superuser with the given email and password
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-        extra_fields.setdefault('is_active', True)
-        extra_fields.setdefault('is_verified', True)
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("is_active", True)
+        extra_fields.setdefault("is_verified", True)
 
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError(_('Superuser must have is_staff=True'))
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError(_('Superuser must have is_superuser=True'))
+        if extra_fields.get("is_staff") is not True:
+            raise ValueError(_("Superuser must have is_staff=True"))
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError(_("Superuser must have is_superuser=True"))
         # at the end must call th ecreate user so the user get created
         return self.create_user(email, password, **extra_fields)
+
 
 # custom user model
 class User(AbstractBaseUser, PermissionsMixin):
@@ -40,7 +44,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_verified = models.BooleanField(default=False)
 
     # set email as username
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"
 
     # can make some fields to be required
     # REQUIRED_FIELD = []
