@@ -4,6 +4,7 @@ python-decouple
 pillow
 djangorestframework
 djangorestframework-simplejwt
+djoser
 
 # third party modules
 markdown
@@ -19,3 +20,5 @@ django-mail-templated
 # refactoring and tests
 black
 flake8
+pytest
+pytest-django
