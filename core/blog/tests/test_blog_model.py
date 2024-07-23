@@ -19,7 +19,7 @@ class TestPostModel(TestCase):
             description = "test description",
         )
 
-    def test_craete_post_with_valid_data(self):
+    def test_create_post_with_valid_data(self):
         post = Post.objects.create(
             author = self.profile,
             title = "test",
