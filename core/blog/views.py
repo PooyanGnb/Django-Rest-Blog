@@ -1,13 +1,7 @@
-from typing import Any
-from django.db.models.query import QuerySet
-from django.forms import BaseModelForm
-from django.http import HttpResponse
-from django.shortcuts import render
 from django.views.generic.base import TemplateView, RedirectView
 from django.views.generic import (
     ListView,
     DetailView,
-    FormView,
     CreateView,
     UpdateView,
     DeleteView,

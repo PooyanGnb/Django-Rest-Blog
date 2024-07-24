@@ -11,7 +11,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from django.conf import settings
 
-from mail_templated import send_mail, EmailMessage
+from mail_templated import EmailMessage
 import jwt
 from jwt.exceptions import ExpiredSignatureError, InvalidSignatureError
 from ..utils import EmailThread
@@ -105,12 +105,6 @@ class ChangePasswordApiView(generics.GenericAPIView):
             # set_password also hashes the password that the user will get
             self.object.set_password(serializer.data.get("new_password"))
             self.object.save()
-            response = {
-                "status": "success",
-                "code": status.HTTP_200_OK,
-                "message": "Password updated successfully",
-                "data": [],
-            }
             return Response(
                 {"details": "password changed successfully"}, status=status.HTTP_200_OK
             )
