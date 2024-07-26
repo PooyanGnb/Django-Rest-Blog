@@ -14,6 +14,7 @@ drf-yasg[validation]
 django-cors-headers
 
 # deployment modules
+locust
 
 # email 3rd party modules
 django-mail-templated
