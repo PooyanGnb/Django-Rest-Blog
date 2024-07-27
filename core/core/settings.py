@@ -176,3 +176,6 @@ EMAIL_HOST_PASSWORD = ""
 
 # cors header settings 
 CORS_ALLOW_ALL_ORIGINS = True
+
+# Celery Configuration Options
+CELERY_BROKER_URL = "redis://redis:6379/1"
