@@ -3,7 +3,7 @@
 
 This project is a simple Blog API built using Django and Django REST Framework. It allows users to create, update, delete, and view blog posts. The project includes essential CRUD (Create, Read, Update, Delete) functionalities for managing blog posts through RESTful APIs.
 
-**P.S**: This project does not have any comments. It was for learning DRF and I did not write any comment for it. So accept my apology
+**P.S**: This project does not have any comments. It was for learning DRF and I did not write any comment for it. So please accept my apology.
 
 ## Features
 
@@ -11,7 +11,7 @@ This project is a simple Blog API built using Django and Django REST Framework. 
 - **Blog Post Management**: Create, Read, Update, and Delete blog posts.
 - **REST API**: All actions are exposed via API endpoints using Django REST Framework.
 - **Pagination**: Blog posts are paginated for easier viewing of large data sets.
-- **Background Tasks**: Manages background tasks using threads and celery
+- **Background Tasks**: Manages background tasks using threads and celery.
 - **Permissions**: Basic permission checks to ensure authenticated users can perform actions.
 
 ## Technologies Used
