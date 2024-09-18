@@ -11,13 +11,15 @@ This project is a simple Blog API built using Django and Django REST Framework. 
 - **Blog Post Management**: Create, Read, Update, and Delete blog posts.
 - **REST API**: All actions are exposed via API endpoints using Django REST Framework.
 - **Pagination**: Blog posts are paginated for easier viewing of large data sets.
+- **Background Tasks**: Manages background tasks using threads and celery
 - **Permissions**: Basic permission checks to ensure authenticated users can perform actions.
 
 ## Technologies Used
 
 - **Django**: Web framework for the backend.
 - **Django REST Framework**: Toolkit to build Web APIs.
-- **SQLite**: Default database for development. (going to be changed to postgre soon)
+- **SQLite**: Default database for development. (going to be changed to postgresql soon)
+- **Celery**: Used to handle background tasks.
 - **Docker** (optional): To run the project in a containerized environment.
 
 ## Requirements
